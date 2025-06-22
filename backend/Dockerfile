@@ -5,13 +5,14 @@ FROM node:18
 WORKDIR ./backend
 
 
-COPY package.json ./
+COPY backend/package.json ./  
 RUN npm install
 RUN npm run build
 RUN npm start
 
 
-COPY . .
+COPY backend/. .
+
 
 
 EXPOSE 3000
