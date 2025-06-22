@@ -54,3 +54,19 @@ export const signinController = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Error signing in user", error });
     }
 };
+
+export const profileController  = async (req: Request, res: Response) => {
+    const userId = req.userId;   
+    try {
+        const user = await User.findById(userId).select("-password"); //
+        if (!user) {
+            logger.warn("User not found for profile:", userId);
+            res.status(404).json({ message: "User not found" });
+        }
+        logger.info(`User profile fetched successfully : ${userId}`);
+        res.status(200).json({ user });
+    } catch (error) {
+        logger.error("Error fetching user profile:", error);
+        res.status(500).json({ message: "Error fetching user profile", error });
+    }
+}
