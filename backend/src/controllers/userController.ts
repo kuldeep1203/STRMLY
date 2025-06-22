@@ -1,4 +1,5 @@
 import { Request,Response } from "express";
+import { generateToken } from "../Utils/common";
 import bcrypt from "bcryptjs";
 import { User } from "../Utils/db";
 import logger from "../Utils/logger";
@@ -14,8 +15,42 @@ export const signupController = async (req: Request, res: Response) => {
         await newUser.save();
         logger.info("User created successfully:", username);
         res.status(201).json({ message: "User created successfully" });
+    } catch (error: any) {
+        if(error.code === 11000) {
+            logger.error("User already exists:", username);
+            res.status(409).json({ message: "User already exists" });
+        }else{
+            logger.error("Error creating user:", error);
+            res.status(500).json({ message: "Error creating user", error });
+        }
+        
+    }
+};
+
+export const signinController = async (req: Request, res: Response) => {
+    const { username, password } = req.body;
+
+    try {
+        const user = await User.findOne({ username: username });
+        if (!user) {
+            logger.warn("User not found:", username);
+            res.status(404).json({ message: "User not found" });
+        }else{
+            logger.info(logger.info(`User found: ${user.username}`));
+            // Compare the password with the hashed password in the database
+            const isPasswordValid = await bcrypt.compare(password, user.password);
+            if (isPasswordValid) {
+                logger.info(`User signed in successfully:,${username}`);
+                const token = generateToken(user._id.toString());
+                res.cookie("token", token, { httpOnly: true, secure: false });
+                res.status(200).json({ message: "User signed in successfully" });
+            } else {
+                logger.warn(`Invalid password for user:", ${username}`);
+                res.status(401).json({ message: "Invalid password" });
+            }
+        }
     } catch (error) {
-        logger.error("Error creating user:", error);
-        res.status(500).json({ message: "Error creating user", error });
+        logger.error("Error signing in user:", error);
+        res.status(500).json({ message: "Error signing in user", error });
     }
 };
