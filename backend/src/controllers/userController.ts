@@ -70,3 +70,14 @@ export const profileController  = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Error fetching user profile", error });
     }
 }
+
+export const logoutController = async (req: Request, res: Response) => {
+    try {
+        res.clearCookie("token");
+        logger.info("User logged out successfully");
+        res.status(200).json({ message: "User logged out successfully" });
+    } catch (error) {
+        logger.error("Error logging out user:", error);
+        res.status(500).json({ message: "Error logging out user", error });
+    }
+};
