@@ -44,7 +44,7 @@ export const signinController = async (req: Request, res: Response) => {
             if (isPasswordValid) {
                 logger.info(`User signed in successfully:,${username}`);
                 const token = generateToken(user._id.toString());
-                res.cookie("token", token, { httpOnly: true, secure: false });
+                res.cookie("token", token, { httpOnly: false, secure: false });
                 res.status(200).json({ message: "User signed in successfully" });
             } else {
                 logger.warn(`Invalid password for user:", ${username}`);
