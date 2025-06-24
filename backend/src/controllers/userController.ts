@@ -1,8 +1,10 @@
 import { Request,Response } from "express";
-import { generateToken } from "../Utils/common";
+import { generateToken , s3} from "../Utils/common";
 import bcrypt from "bcryptjs";
-import { User } from "../Utils/db";
+import { User , Video } from "../Utils/db";
 import logger from "../Utils/logger";
+
+
 
 export const signupController = async (req: Request, res: Response) => {
     logger.info(JSON.stringify(req.body));
@@ -81,3 +83,34 @@ export const logoutController = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Error logging out user", error });
     }
 };
+
+export const uploadController = async (req: Request, res: Response) => {
+    const file  = req.file as Express.Multer.File;
+    const userId = req.userId;
+
+    if(!file){
+        logger.warn("No file uploaded ");
+        res.status(400).json({ message: "No file uploaded" });
+    }
+    const s3params = {
+        Bucket : process.env.AWS_BUCKET_NAME as string,
+        Key:`videos/${Date.now()}-${file.originalname}`,
+        Body:file.buffer,
+        ContentType:file.mimetype,
+    }
+    try{
+        const s3Result =  await s3.upload(s3params).promise();
+        logger.info(`File uploaded successfully to S3: ${s3Result.Location}`);
+
+        const newVideo = await Video.create({
+            userId,
+            title  : file.originalname,
+            s3Url: s3Result.Location,
+        })
+        res.status(201).json({ message: "File uploaded successfully", video: newVideo });
+    }catch(error){
+        logger.error(`Error uploading file to S3: ${error}`);
+        res.status(500).json({ message: "Error uploading file "})
+    }
+}
+;

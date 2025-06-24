@@ -17,4 +17,13 @@ const userSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now },
 })
 
+
+const videoSchema = new mongoose.Schema({
+    title: { type: String, required: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    s3Url:String,
+    uploadedAt: { type: Date, default: Date.now },
+});
+
 export const User = mongoose.model("User", userSchema);
+export const Video = mongoose.model("Video", videoSchema);  
