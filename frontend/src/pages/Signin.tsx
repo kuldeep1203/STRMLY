@@ -1,11 +1,11 @@
 // src/Signin.tsx
 import React, { useState } from "react";
 import "../App.css";
-
+import { useNavigate } from "react-router-dom";
 const Signin: React.FC = () => {
   const [form, setForm] = useState({ username: "", password: "" });
   const [message, setMessage] = useState("");
-
+  const Navigate = useNavigate();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -15,7 +15,7 @@ const Signin: React.FC = () => {
 
     try {
       const res = await fetch(
-        "https://strmly-5gv6.onrender.com/api/v1/user/signin",
+        "http://localhost:3000/api/v1/user/signin",
         {
           method: "POST",
           headers: {
@@ -30,6 +30,7 @@ const Signin: React.FC = () => {
       console.log("Response data:", data);
       if (res.ok) {
         setMessage("Signin successful!");
+        Navigate("/Profile");
         
       } else {
         setMessage(data.message || "Signin failed!");

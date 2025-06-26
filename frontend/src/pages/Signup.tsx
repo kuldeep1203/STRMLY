@@ -20,7 +20,7 @@ const Signup: React.FC = () => {
 
     try {
       const res = await fetch(
-        "https://strmly-5gv6.onrender.com/api/v1/user/signup",
+        "http://localhost:3000/api/v1/user/signup",
         {
           method: "POST",
           headers: {

@@ -1,7 +1,7 @@
 import "./App.css";
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
-
+import Profile from  "./pages/Profile"
 import {
   BrowserRouter,
   Routes,
@@ -34,6 +34,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/Signin" element={<Signin/>} />
         <Route path="/Signup" element={<Signup />} />
+        <Route path ="/Profile" element={<Profile/>} />
       </Routes>
     </BrowserRouter>
   );
