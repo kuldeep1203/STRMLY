@@ -1,5 +1,5 @@
 import { Request,Response } from "express";
-import { generateToken , s3} from "../Utils/common";
+import { generateToken , s3,getPresignedUrl} from "../Utils/common";
 import bcrypt from "bcryptjs";
 import { User , Video } from "../Utils/db";
 import logger from "../Utils/logger";
@@ -113,4 +113,26 @@ export const uploadController = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Error uploading file "})
     }
 }
-;
+export const getVideoController = async(req:Request , res  :Response) =>{
+    try{
+        const videos = await Video.find().sort({ _id: 1 });
+
+        const response = await Promise.all(
+            videos.map(async (video) => {
+                const signedUrl = await getPresignedUrl(video.s3Url); // s3Url should be the S3 key like "videos/abc.mp4"
+                return {
+                    id: video._id,
+                    title: video.title,
+                    url: signedUrl,
+                };
+            })
+        );
+
+        res.json({videos : response});
+
+    }catch(error){
+        logger.error(`Error fetching videos:, ${error}`)
+        console.error(`Error fetching videos:, ${error}`);
+        res.status(500).json({ message: "Error fetching videos" });
+    }
+}

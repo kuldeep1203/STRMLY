@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../App.css";
 import UploadVideo from "./Upload";
+import { VideoFeed } from "./Fetchvideo";
 
 const Profile: React.FC = () => {
   const [profile, setProfile] = useState<{
@@ -43,7 +44,7 @@ const Profile: React.FC = () => {
   const handleLogout = async () => {
     try {
       const res = await fetch(
-        "http://localhost:3000/api/v1/user//user/logout",
+        "http://localhost:3000/api/v1/user/logout",
         {
           method: "GET",
           credentials: "include",
@@ -106,6 +107,7 @@ const Profile: React.FC = () => {
           Your personalized streaming dashboard awaits 🎬
         </p>
         <UploadVideo/>
+        <VideoFeed />
       </div>
     </div>
   );
