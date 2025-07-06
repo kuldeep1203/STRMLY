@@ -27,7 +27,7 @@ body {
   margin-bottom: 2rem;
 }
 
-/* Button layout */
+
 .button-container {
   display: flex;
   gap: 1rem;
@@ -35,7 +35,7 @@ body {
   justify-content: center;
 }
 
-/* Netflix-style buttons */
+
 .glossy-button {
   background-color: #e50914;
   color: #ffffff;
@@ -47,7 +47,14 @@ body {
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-
+.dialog-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center; 
+  padding-bottom: 20px;
+  padding-top: 20px;
+}
 .glossy-button:hover {
   background-color: #b20710;
 }
@@ -181,6 +188,34 @@ body {
   border-radius: 4px;
   font-weight: bold;
   cursor: pointer;
+}
+
+.dialog-box{
+  background-color: #141414;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: smaller;
+  color: #aaa;
+  border-width: 0cap;
+  border-radius: 10px;
+  
+}
+.btn-out{
+  background-color: #b20710;
+  border-radius: 10px;
+  border-width: 0cap;
+  font-size:1rem ;
+  font-family: 'Courier New', Courier, monospace;
+  color: #fff;
+  padding-inline: 40px;
+}
+.btn-in{
+  font-size: 1rem;
+  padding-inline: 30px;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  margin-left: 1rem;
 }
 
 .upload-button:hover {

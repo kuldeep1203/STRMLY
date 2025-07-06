@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../App.css";
-import UploadVideo from "./Upload";
 import { VideoFeed } from "./Fetchvideo";
+import UploadVideo from "./Upload";
+
+
 
 const Profile: React.FC = () => {
   const [profile, setProfile] = useState<{
@@ -74,6 +76,12 @@ const Profile: React.FC = () => {
       <div className="netflix-header">
         <div className="header-content">
           <h1 className="netflix-logo">Strmly</h1>
+
+          <div>
+            <UploadVideo/>
+          </div>
+
+
           <div className="profile-actions">
             <button className="logout-btn" onClick={handleLogout}>
               Logout
@@ -95,6 +103,9 @@ const Profile: React.FC = () => {
             <p>
               <strong>Email:</strong> {profile.email}
             </p>
+            <p>
+              <button className="profile-btn" style={{fontSize:'1rem'}} onClick={()=>navigate("/Manage-videos")}>Manage Videos</button>
+            </p>
           </div>
         )}
       </div>
@@ -106,7 +117,6 @@ const Profile: React.FC = () => {
         <p className="subtitle">
           Your personalized streaming dashboard awaits 🎬
         </p>
-        <UploadVideo/>
         <VideoFeed />
       </div>
     </div>
