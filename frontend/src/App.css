@@ -92,6 +92,43 @@ body {
     font-weight: bold;
     text-align: center;
 }
+.video-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 2rem;
+}
+
+.video-card {
+  background-color: #1a1a1a;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease-in-out;
+}
+
+.video-card:hover {
+  transform: scale(1.02);
+}
+
+.video-player {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  background: black;
+}
+
+.video-title {
+  color: #fff;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.video-date {
+  color: #aaa;
+  font-size: 0.875rem;
+}
+
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;

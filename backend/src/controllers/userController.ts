@@ -124,6 +124,7 @@ export const getVideoController = async(req:Request , res  :Response) =>{
                     id: video._id,
                     title: video.title,
                     url: signedUrl,
+                    uploadDate:video.uploadedAt
                 };
             })
         );
@@ -140,7 +141,18 @@ export const getVideoController = async(req:Request , res  :Response) =>{
 export const getUserVideoController = async(req:Request , res:Response) =>{
     try{
         const videos  = await Video.find({userId:req.userId}).sort({createAt:-1});
-        res.json({videos});
+        const response = await Promise.all(
+            videos.map(async (video) => {
+                const signedUrl = await getPresignedUrl(video.s3Url); // s3Url should be the S3 key like "videos/abc.mp4"
+                return {
+                    id: video._id,
+                    title: video.title,
+                    url: signedUrl,
+                    createdAt:video.uploadedAt
+                };
+            })
+        );
+        res.json({response});
     }catch(error){
         logger.error(`ERROR fetchin videos: ${error}`)
         res.status(500).json({message:"Error fetching videos"})
