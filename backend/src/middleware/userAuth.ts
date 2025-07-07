@@ -35,7 +35,7 @@ export function userValidation(req: Request, res: Response, next: NextFunction) 
     }
     try{
         const decoded = verifyToken(token) ;
-        req.userId = (decoded as { userId: string }).userId; // Set userId in request for further use
+        req.userId = (decoded as { userId: string }).userId; 
         logger.info("User validation successful:", decoded);
         next();
     }catch (error) {

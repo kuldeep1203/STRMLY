@@ -136,3 +136,30 @@ export const getVideoController = async(req:Request , res  :Response) =>{
         res.status(500).json({ message: "Error fetching videos" });
     }
 }
+
+export const getUserVideoController = async(req:Request , res:Response) =>{
+    try{
+        const videos  = await Video.find({userId:req.userId}).sort({createAt:-1});
+        res.json({videos});
+    }catch(error){
+        logger.error(`ERROR fetchin videos: ${error}`)
+        res.status(500).json({message:"Error fetching videos"})
+    }
+}
+
+export const deleteVideoController = async(req:Request , res :Response)=>{
+    try{
+        const video  = await Video.findById(req.params.id);
+
+        if(!video){
+            return res.status(404).json({message:"Video not found"});
+        }
+        
+        await video.deleteOne();
+        res.json({message : "Video deleted successfully"});
+
+    }catch(error){
+        logger.error(`Error deleteing video:${error}`);
+        res.status(500).json({message : "Failed to delete video"});
+    }
+}   
